@@ -2,6 +2,7 @@
 超市进销存管理系统（SpringBoot+Mybatis）
 
 博客地址：http://42.194.145.57:8081/
+
 管理员账户：admin   密码：123456
 
 ## 一、技术栈
@@ -10,7 +11,6 @@ JS框架：JQuery
 
 CSS框架：Semantic UI官网
 
-Markdown编辑器：编辑器 Markdown
 
 ### 2.后端
 核心框架：SpringBoot 2.4.4
