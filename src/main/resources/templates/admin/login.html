@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"> <!--设置移动端的预览-->
+    <title>超市进销存管理系统</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+
+</head>
+<body>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div class="ui me-container-small me-padded-tb-massive" style="max-width: 30em !important;">
+    <div class="ui container">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui blue image header">
+                    <div class="content">
+                        超市进销存管理系统
+                    </div>
+                </h2>
+                <form class="ui large form" method="post" action="#" th:action="@{/admin/login}">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="username" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <button class="ui fluid large blue submit button">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+                    </div>
+
+                    <div class="ui error message"></div>
+
+                    <!--                    <div class="ui negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>-->
+                    <div class="ui negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+                    <div class="ui negative message" th:unless="${#strings.isEmpty(session.msg)}" th:text="${session.msg}"></div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+<script>
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+    //账号密码非空验证
+    $('.ui.form').form({
+        fields : {
+            username : {
+                identifier : 'username',
+                rules : [{
+                    type : 'empty',
+                    prompt : '请输入用户名'
+                }]
+            },
+            password : {
+                identifier : 'password',
+                rules : [{
+                    type : 'empty',
+                    prompt : '请输入密码'
+                }]
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

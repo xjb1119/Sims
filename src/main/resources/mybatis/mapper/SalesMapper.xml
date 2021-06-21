@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bo.sims.dao.SalesMapper">
+
+    <select id="getSalesBill" resultMap="sales">
+
+        SELECT s.`bid` , s.`gid` , b.`create_time` , g.`name` , s.`sales_count` ,b.`need_payment` , b.`real_payment`,g.`sale_price`
+        FROM `t_sales` s ,`t_bill` b , `t_goods` g
+        WHERE s.`bid` = b.`id` AND s.`gid` = g.`id` AND s.`bid` = #{billId}
+
+    </select>
+
+
+    <resultMap id="sales" type="com.bo.sims.pojo.Sales">
+        <id property="bid" column="bid"/>
+        <id property="gid" column="gid"/>
+        <result property="salesCount" column="sales_count"/>
+
+        <association property="goods" javaType="com.bo.sims.pojo.Goods">
+            <id property="id" column="gid"/>
+            <result property="name" column="name"/>
+            <result property="salePrice" column="sale_price"/>
+        </association>
+
+        <association property="bill" javaType="com.bo.sims.pojo.Bill">
+            <id property="id" column="bid"/>
+            <result property="needPayment" column="need_payment"/>
+            <result property="realPayment" column="real_payment"/>
+            <result property="createTime" column="create_time"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

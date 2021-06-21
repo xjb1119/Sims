@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh_CN"  xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+
+<!--    导航-->
+<div th:replace="common :: menu(4)"  class="ui inverted attached segment me-padded-tb-tiny me-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui header blue item">超市进销存管理系统</h2>
+            <a href="#" class="m-item item me-mobile-hide"><i class="clone icon"></i>前台结账</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="folder icon"></i>账目日结</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="tags icon"></i>商品管理</a>
+            <a href="#" class="active m-item item me-mobile-hide"><i class="image icon"></i>供应商管理</a>
+            <div class="right m-item me-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        管理员
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui attached pointing menu" style="height: 45px">
+    <div class="ui container">
+        <div class="right menu">
+            <div class="right m-item item me-mobile-hide">
+                <form name="search" action="#" th:action="@{/admin/supplier/search}" method="get" target="_blank">
+                    <div class="ui icon input" style="height: 35px">
+                        <input type="text" name="supplierName" placeholder="供应商名称">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+            <a href="#" th:href="@{/admin/supplier/input}" class="blue active item">管理</a>
+            <a href="#" th:href="@{/admin/supplier}"  class="item">列表</a>
+        </div>
+    </div>
+</div>
+
+
+<!--    中间内容-->
+<div  class="me-container-small me-padded-tb-middle">
+    <div class="ui container">
+
+        <form action="#" method="post" th:object="${supplier}" th:action="*{id}==null ? @{/admin/supplier} : @{/admin/supplier/{id}(id=*{id})}"
+              class="ui form">
+            <input type="hidden" name="pageNum" th:value="${pageNum}==null ? 1 :${pageNum}">
+
+            <!--            提示后端验证的错误信息（一定要放在需要提交的表单内）-->
+            <div class="ui negative message"
+                 th:if="${#fields.hasErrors('name') || #fields.hasErrors('address') || #fields.hasErrors('contact')}">
+                <i class="close icon"></i>
+                <div class="header me-padded-tb-small">验证失败</div>
+                <div th:errors="*{name}" class="me-padded-tb-veryMini">提交信息不符合规则</div>
+                <div th:errors="*{address}" class="me-padded-tb-veryMini"></div>
+                <div th:errors="*{contact}" class="me-padded-tb-veryMini"></div>
+            </div>
+
+
+            <!-- 名称修改-->
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label class="ui blue basic label">供应商名称</label>
+                    <input type="text" name="name" placeholder="供应商名称" th:value="*{name} != null ? *{name}">
+                </div>
+            </div>
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label class="ui blue basic label">地址</label>
+                    <input type="text" name="address" placeholder="地址" th:value="*{address} != null ? *{address}">
+                </div>
+            </div>
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label class="ui blue basic label">联系方式</label>
+                    <input type="text" name="contact" placeholder="联系方式" th:value="*{contact} != null ? *{contact}">
+                </div>
+            </div>
+
+
+            <!--                错误信息-->
+            <div class="ui error message"></div>
+
+
+            <!--                两个按钮-->
+            <div class="ui right aligned container">
+                <button class="ui button" type="button" onclick="window.history.go(-1)">返回</button>
+                <button class="ui blue submit button">提交</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<br/>
+<br/>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+<script>
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+    $('.ui.form').form({
+        fields : {
+            name : {
+                identifier : 'name',
+                rules : [{
+                    type : 'empty',
+                    prompt : '请输入供应商名称'
+                }]
+            },
+            address : {
+                identifier : 'address',
+                rules : [{
+                    type : 'empty',
+                    prompt : '请输入供应商地址'
+                }]
+            },
+            contact : {
+                identifier : 'contact',
+                rules : [{
+                    type : 'empty',
+                    prompt : '请输入供应商联系方式'
+                }]
+            }
+        }
+    });
+    //消息提示关闭初始化
+    $('.message .close').on('click',function () {
+        $(this).closest('.message').transition('fade');
+    });
+
+
+</script>
+</body>
+</html>

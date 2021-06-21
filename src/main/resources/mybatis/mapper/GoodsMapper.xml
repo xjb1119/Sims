@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bo.sims.dao.GoodsMapper">
+
+
+    <select id="getOneGoodsById" resultMap="goods">
+        SELECT g.`id` goodsId,g.`name` goodsName,g.`count`,g.`prime_price`,g.`sale_price`,g.`type`,g.`sid`,s.`id` supplierId,s.`name` supplierName
+        FROM t_goods g,t_supplier s
+        WHERE g.`sid` = s.`id` AND g.`id` = #{id}
+    </select>
+
+    <select id="getOneGoodsByName" resultMap="goods">
+        SELECT g.`id` goodsId,g.`name` goodsName,g.`count`,g.`prime_price`,g.`sale_price`,g.`type`,g.`sid`,s.`id` supplierId,s.`name` supplierName
+        FROM t_goods g,t_supplier s
+        WHERE g.`sid` = s.`id` AND g.`name` = #{name}
+    </select>
+
+    <select id="getAllGoods" resultMap="goods">
+        SELECT g.`id` goodsId,g.`name` goodsName,g.`count`,g.`prime_price`,g.`sale_price`,g.`type`,g.`sid`,s.`id` supplierId,s.`name` supplierName
+        FROM t_goods g,t_supplier s
+        WHERE g.`sid` = s.`id`
+    </select>
+
+    <select id="getAllGoodsBySupplierId" resultMap="goods">
+        SELECT g.`id` goodsId,g.`name` goodsName,g.`count`,g.`prime_price`,g.`sale_price`,g.`type`,g.`sid`,s.`id` supplierId,s.`name` supplierName
+        FROM t_goods g,t_supplier s
+        WHERE g.`sid` = s.`id` AND g.`sid` = #{supplierId}
+    </select>
+
+    <select id="getSalePriceByIdAndCount" resultType="decimal">
+
+        SELECT g.`sale_price`
+        FROM `t_goods` g
+        WHERE g.`id` = #{id} AND g.`count` >= #{count};
+
+    </select>
+
+    <update id="updateGoodsCount">
+
+        UPDATE `t_goods`
+        SET `count` = `count` - #{salesCount}
+        WHERE `id` = #{id};
+
+    </update>
+
+
+    <select id="getCountANDNotLessThanZeroById" resultType="long">
+
+        SELECT t.`count`
+        FROM t_goods t
+        WHERE t.`id` = #{id} AND t.`count` >= 0;
+
+    </select>
+
+
+    <select id="getProfitsByIdAndSalesCount" resultType="decimal">
+
+        SELECT  (g.`sale_price` - g.`prime_price`) * #{salesCount}
+        FROM `t_goods` g
+        WHERE g.`id` = #{id}
+
+    </select>
+
+    <resultMap id="goods" type="com.bo.sims.pojo.Goods">
+        <id property="id" column="goodsId"/>
+        <result property="name" column="goodsName"/>
+        <result property="count" column="count"/>
+        <result property="primePrice" column="prime_price"/>
+        <result property="salePrice" column="sale_price"/>
+        <result property="type" column="type"/>
+        <result property="sid" column="sid"/>
+
+        <association property="supplier" javaType="com.bo.sims.pojo.Supplier">
+            <id property="id" column="supplierId"/>
+            <result property="name" column="supplierName"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

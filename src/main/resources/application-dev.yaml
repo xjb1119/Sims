@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/sims?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: '0106'
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    root: info
+    com.bo: debug

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>账目日结</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--    导航-->
+<div th:replace="common :: menu(2)" class="ui inverted attached segment me-padded-tb-mini me-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui header blue item">超市进销存管理系统</h2>
+            <a href="#" class="m-item item me-mobile-hide"><i class="clone icon"></i>前台结账</a>
+            <a href="#" class="active m-item item me-mobile-hide"><i class="folder icon"></i>账目日结</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="tags icon"></i>商品管理</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="image icon"></i>供应商管理</a>
+            <div class="right m-item me-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img src="../../static/images/aboutMe.jpg" alt="" class="ui avatar image">
+                        管理员
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    中间内容-->
+<div class="me-container-small me-padded-tb-middle">
+    <div class="ui container">
+        <!--                    头部-->
+        <div class="ui top attached padded segment me-segment-border-none">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui blue header">账目日结</h3>
+                </div>
+                <div class="right aligned column">
+                    共 <h3 class="ui blue header me-inline-block me-text-thin" th:text="${dayCount}"> 104 </h3> 天账目
+                </div>
+            </div>
+        </div>
+
+
+        <h3 class="ui header center aligned"
+            th:text="${#dates.format(profitsAndTimes[0].createTime,'yyyy')}">2021</h3>
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall"
+             th:each="profitsAndTime : ${profitsAndTimes}">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui blue header" th:text="${#dates.format(profitsAndTime.createTime,'MM-dd')} ">
+                        06-17
+                    </h3>
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui blue header me-inline-block me-text-thin"
+                        th:text="${profitsAndTime.profits}"> + 1054&nbsp;元 </h3>
+                </div>
+
+
+                <!--/*-->
+                <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <h3 class="ui blue header">06-16</h3>
+                        </div>
+                        <div class="right aligned column">
+                            <h3 class="ui blue header me-inline-block me-text-thin"> - 5050&nbsp;元 </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <h3 class="ui blue header">06-15</h3>
+                        </div>
+                        <div class="right aligned column">
+                            <h3 class="ui blue header me-inline-block me-text-thin"> + 7094&nbsp;元 </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--*/-->
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<br/>
+<br/>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+</script>
+
+</body>
+</html>

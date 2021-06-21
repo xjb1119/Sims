@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bo.sims.dao.BillMapper">
+
+<!--useGeneratedKeys="true" keyProperty="id" 是用来获取刚才插入的自增id主键-->
+    <insert id="saveBill" parameterType="com.bo.sims.pojo.Bill" useGeneratedKeys="true" keyProperty="id">
+
+        insert into `t_bill`(need_payment,real_payment,create_time,profits)
+        values(#{needPayment},#{realPayment},#{createTime},#{profits})
+
+    </insert>
+
+
+    <select id="getProfitsAndTime" resultType="com.bo.sims.pojo.Bill">
+
+        SELECT SUM(t.`profits`) profits, DATE_FORMAT(T.`create_time`,'%Y-%m-%d') AS createTime
+        FROM `t_bill` t
+        GROUP BY DATE_FORMAT(t.`create_time`,'%Y-%m-%d')
+        ORDER BY createTime DESC
+
+    </select>
+
+
+
+
+
+
+</mapper>

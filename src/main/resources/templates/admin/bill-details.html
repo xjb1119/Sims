@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh_CN"  xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>订单结果</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+
+<!--    导航-->
+<div th:replace="common :: menu(1)"  class="ui inverted attached segment me-padded-tb-mini me-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui header blue item">超市进销存管理系统</h2>
+            <a href="#" class="active m-item item me-mobile-hide"><i class="clone icon"></i>前台结账</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="folder icon"></i>账目日结</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="tags icon"></i>商品管理</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="image icon"></i>供应商管理</a>
+            <div class="right m-item me-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img src="../../static/images/aboutMe.jpg" alt="" class="ui avatar image">
+                        管理员
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui attached pointing menu" style="height: 45px">
+    <div class="ui container">
+        <div class="right menu">
+            <div class="right m-item item me-mobile-hide">
+                <form name="search" action="#" th:action="@{/admin/bill/details}" method="get" target="_blank">
+                    <div class="ui icon input" style="height: 35px">
+                        <input type="text" name="id" placeholder="订单编号">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+            <a href="#" class="blue active item" th:href="@{/admin/bill/details(id=${billDetails[0].bid})}">订单结果</a>
+            <a href="#" class="item" th:href="@{/admin/bill/payment}">订单结算</a>
+        </div>
+    </div>
+</div>
+
+
+<!--    中间内容-->
+<div class="me-container-small me-padded-tb-middle">
+    <div class="ui container">
+        <h1 class="ui header center aligned">订单详情</h1>
+        <!--                    头部-->
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui header">订单号：&nbsp;&nbsp;</h3>
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui header me-inline-block me-text-thin" th:text="${billDetails[0].bid}"> 10569744 </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui header">结算时间：&nbsp;&nbsp;</h3>
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui header me-inline-block me-text-thin"
+                        th:text="${#dates.format(billDetails[0].bill.createTime,'yyyy-MM-dd&nbsp;&nbsp;HH:mm:ss')}"> 2021-6-17&nbsp;&nbsp;22:25</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall"
+             th:each="billDetail : ${billDetails}">
+            <div class="ui middle aligned five column grid" >
+                <div class="column">
+                   <h3 class="ui header">商品名：&nbsp;&nbsp;[[${billDetail.goods.name}]]</h3>
+                </div>
+                <div class="column">
+                    <h3 class="ui header" >数量：&nbsp;&nbsp;[[${billDetail.salesCount}]]</h3>
+                </div>
+                <div class="column">
+                </div>
+                <div class="column">
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui header me-inline-block me-text-thin"
+                        th:text="${billDetail.salesCount} * ${billDetail.goods.salePrice}"> 70&nbsp;元 </h3>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui header">应付金额：&nbsp;&nbsp;</h3>
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui header me-inline-block me-text-thin" th:text="${billDetails[0].bill.needPayment}"> 1056&nbsp;元 </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui header">实付金额：&nbsp;&nbsp;</h3>
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui header me-inline-block me-text-thin" th:text="${billDetails[0].bill.realPayment}"> 1200&nbsp;元 </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui top attached padded segment me-segment-border-none me-padded-tb-middleSmall">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui header">找零金额：&nbsp;&nbsp;</h3>
+                </div>
+                <div class="right aligned column">
+                    <h3 class="ui header me-inline-block me-text-thin"
+                        th:text="${billDetails[0].bill.realPayment} - ${billDetails[0].bill.needPayment}"> 144&nbsp;元 </h3>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<br/>
+<br/>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+<script>
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    $('.ui.form').form({
+        fields: {
+            name: {
+                identifier: 'name',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入商品名称'
+                }]
+            },
+            type: {
+                identifier: 'type',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入商品分类'
+                }]
+            },
+            supplier: {
+                identifier: 'supplier',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入商品供应商'
+                }]
+            },
+            count: {
+                identifier: 'count',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入商品库存量'
+                }]
+            },
+            primePrice: {
+                identifier: 'primePrice',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入商品进价'
+                }]
+            },
+            salePrice: {
+                identifier: 'salePrice',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入商品售价'
+                }]
+            }
+        }
+    });
+    //消息提示关闭初始化
+    $('.message .close').on('click', function () {
+        $(this).closest('.message').transition('fade');
+    });
+
+
+</script>
+</body>
+</html>

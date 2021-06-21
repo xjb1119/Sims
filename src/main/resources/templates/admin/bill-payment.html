@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>订单结算</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+
+<!--    导航-->
+<div th:replace="common :: menu(1)" class="ui inverted attached segment me-padded-tb-mini me-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui header blue item">超市进销存管理系统</h2>
+            <a href="#" class="active m-item item me-mobile-hide"><i class="clone icon"></i>前台结账</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="folder icon"></i>账目日结</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="tags icon"></i>商品管理</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="image icon"></i>供应商管理</a>
+            <div class="right m-item me-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img src="../../static/images/aboutMe.jpg" alt="" class="ui avatar image">
+                        管理员
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui attached pointing menu" style="height: 45px">
+    <div class="ui container">
+        <div class="right menu ">
+            <div class="right m-item item me-mobile-hide">
+                <form name="search" action="#" th:action="@{/admin/bill/details}" method="get" target="_blank">
+                    <div class="ui icon input" style="height: 35px">
+                        <input type="text" name="id" placeholder="订单编号">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+            <a href="#" class="item" th:href="@{/admin/bill/details(id=-1)}">订单结果</a>
+            <a href="#" class="blue active item" th:href="@{/admin/bill/payment}">订单结算</a>
+        </div>
+    </div>
+</div>
+
+<!--    中间内容-->
+<div class="me-container-small me-padded-tb-middle">
+    <div class="ui container">
+
+        <form action="#" method="post" th:action="@{/admin/bill/settlement}" class="ui form">
+            <input type="hidden" name="pageNum">
+
+            <!--            提示后端验证后的信息-->
+            <div class="ui blue message" th:unless="${#strings.isEmpty(message)}">
+                <i class="close icon"></i>
+                <div class="header">提示:</div>
+                <p th:text="${message}">操作成功</p>
+            </div>
+
+
+            <div class="two fields">
+                <div class="field">
+                    <div class="ui left labeled action input">
+                        <label class="ui compact blue basic label">商品名称</label>
+                        <div class="ui fluid selection dropdown">
+                            <input type="hidden" name="goodId1">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">商品名称</div>
+                            <div class="menu">
+                                <div class="item" th:each="goods : ${goodsList}" th:text="${goods.name}"
+                                     th:data-value="${goods.id}" data-value="1">快乐水
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left labeled input">
+                        <label class="ui blue basic label">商品数量</label>
+                        <input type="text" name="salesCount1" placeholder="商品数量">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <div class="ui left labeled action input">
+                        <label class="ui compact blue basic label">商品名称</label>
+                        <div class="ui fluid selection dropdown">
+                            <input type="hidden" name="goodId2">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">商品名称</div>
+                            <div class="menu">
+                                <div class="item" th:each="goods : ${goodsList}" th:text="${goods.name}"
+                                     th:data-value="${goods.id}" data-value="1">快乐水
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left labeled input">
+                        <label class="ui blue basic label">商品数量</label>
+                        <input type="text" name="salesCount2" placeholder="商品数量">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <div class="ui left labeled action input">
+                        <label class="ui compact blue basic label">商品名称</label>
+                        <div class="ui fluid selection dropdown">
+                            <input type="hidden" name="goodId3">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">商品名称</div>
+                            <div class="menu">
+                                <div class="item" th:each="goods : ${goodsList}" th:text="${goods.name}"
+                                     th:data-value="${goods.id}" data-value="1">快乐水
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left labeled input">
+                        <label class="ui blue basic label">商品数量</label>
+                        <input type="text" name="salesCount3" placeholder="商品数量">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <div class="ui left labeled action input">
+                        <label class="ui compact blue basic label">商品名称</label>
+                        <div class="ui fluid selection dropdown">
+                            <input type="hidden" name="goodId4">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">商品名称</div>
+                            <div class="menu">
+                                <div class="item" th:each="goods : ${goodsList}" th:text="${goods.name}"
+                                     th:data-value="${goods.id}" data-value="1">快乐水
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left labeled input">
+                        <label class="ui blue basic label">商品数量</label>
+                        <input type="text" name="salesCount4" placeholder="商品数量">
+                    </div>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <div class="ui left labeled action input">
+                        <label class="ui compact blue basic label">商品名称</label>
+                        <div class="ui fluid selection dropdown">
+                            <input type="hidden" name="goodId5">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">商品名称</div>
+                            <div class="menu">
+                                <div class="item" th:each="goods : ${goodsList}" th:text="${goods.name}"
+                                     th:data-value="${goods.id}" data-value="1">快乐水
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left labeled input">
+                        <label class="ui blue basic label">商品数量</label>
+                        <input type="text" name="salesCount5" placeholder="商品数量">
+                    </div>
+                </div>
+            </div>
+
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label class="ui blue basic label">实付金额</label>
+                    <input type="text" name="realPayment" placeholder="实付金额">
+                </div>
+            </div>
+
+
+            <!--                错误信息-->
+            <div class="ui error message"></div>
+
+
+            <!--                两个按钮-->
+            <div class="ui right aligned container">
+                <a href="#" class="ui button" type="button" th:href="@{/admin/bill/payment}">清空</a>
+                <button class="ui blue submit button">结账</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<br/>
+<br/>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+<script>
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    $('.ui.form').form({
+        fields: {
+            realPayment: {
+                identifier: 'realPayment',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入实付金额'
+                }]
+            }
+        }
+    });
+    //消息提示关闭初始化
+    $('.message .close').on('click',function () {
+        $(this).closest('.message').transition('fade');
+    });
+
+
+</script>
+</body>
+</html>

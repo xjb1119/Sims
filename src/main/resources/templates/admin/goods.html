@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--    导航-->
+<div th:replace="common :: menu(3)"  class="ui inverted attached segment me-padded-tb-mini me-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui header blue item">超市进销存管理系统</h2>
+            <a href="#" class="m-item item me-mobile-hide"><i class="clone icon"></i>前台结账</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="folder icon"></i>账目日结</a>
+            <a href="#" class="active m-item item me-mobile-hide"><i class="tags icon"></i>商品管理</a>
+            <a href="#" class="m-item item me-mobile-hide"><i class="image icon"></i>供应商管理</a>
+            <div class="right m-item me-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img src="../../static/images/aboutMe.jpg" alt="" class="ui avatar image">
+                        管理员
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui attached pointing menu" style="height: 45px">
+    <div class="ui container">
+        <div class="right menu">
+            <div class="right m-item item me-mobile-hide">
+                <form name="search" action="#" th:action="@{/admin/goods/search}" method="get" target="_blank">
+                    <div class="ui icon input" style="height: 35px">
+                        <input type="text" name="goodsName" placeholder="商品名称">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+            <a href="#" th:href="@{/admin/goods/input}" class="item">管理</a>
+            <a href="#" th:href="@{/admin/goods}" class="blue active item">列表</a>
+        </div>
+    </div>
+</div>
+
+
+<!--    中间内容-->
+<div class="me-container-small me-padded-tb-middle">
+    <div class="ui container">
+
+        <!--            提示后端验证后的信息-->
+        <div class="ui blue message" th:unless="${#strings.isEmpty(message)}">
+            <i class="close icon"></i>
+            <div class="header">提示:</div>
+            <p th:text="${message}">操作成功</p>
+        </div>
+
+        <table class="ui celled table ">
+            <thead>
+            <tr align="center">
+                <th width="5%"></th>
+                <th width="15%">商品名称</th>
+                <th width="7%">分类</th>
+                <th width="15%">供应商</th>
+                <th width="7%">库存量</th>
+                <th width="7%">进价</th>
+                <th width="7%">售价</th>
+                <th width="17%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="goods,iterStat : ${pageInfo.list}"  align="center">
+                <td th:text="${iterStat.count}">1</td>
+                <td th:text="${goods.name}">快乐水</td>
+                <td th:text="${goods.type}">饮料</td>
+                <td th:text="${goods.supplier.name}">快乐水有限公司</td>
+                <td th:text="${goods.count}">99</td>
+                <td th:text="${goods.primePrice}">2.3</td>
+                <td th:text="${goods.salePrice}">3.5</td>
+                <td>
+                    <a href="#" th:href="@{/admin/goods/{id}/input(id=${goods.id},pageNum=${pageInfo.pageNum})}" class="ui basic blue button">修改</a>
+                    <a href="#" th:href="@{/admin/goods/{id}/delete(id=${goods.id},pageNum=${pageInfo.pageNum})}" class="ui basic red button">删除</a>
+                </td>
+            </tr>
+            </tbody>
+
+            <!--            以下注释的内容在Thymeleaf模板下不显示-->
+            <!--/*-->
+            <tbody>
+            <tr align="center">
+                <td>2</td>
+                <td>辣条</td>
+                <td>零食</td>
+                <td>辣条有限公司</td>
+                <td>201</td>
+                <td>3.7</td>
+                <td>5.0</td>
+                <td>
+                    <a href="#" class="ui basic blue button">修改</a>
+                    <a href="#" class="ui basic red button">删除</a>
+                </td>
+            </tr>
+            </tbody>
+            <!--*/-->
+
+            <tfoot>
+            <tr>
+
+                <!--分页模块-->
+                <th colspan="8">
+                    <div class="ui inverted divided stackable grid">
+                        <div class="three wide column" align="center">
+                            <a th:href="@{/admin/goods(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}"
+                               th:unless="${pageInfo.isFirstPage}" class="item">上一页</a>
+                        </div>
+
+                        <div class="ten wide column" align="center">
+                            <p>第 <span th:text="${pageInfo.pageNum}"></span> 页，共 <span
+                                    th:text="${pageInfo.pages}"></span> 页，有 <span
+                                    th:text="${pageInfo.total}"></span> 个商品</p>
+                        </div>
+
+                        <div class="three wide column" align="center">
+                            <a th:href="@{/admin/goods(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}"
+                               th:unless="${pageInfo.isLastPage}" class="item">下一页</a>
+                        </div>
+                    </div>
+                    <div align="center" class="me-padded-tb-small">
+                        <a href="#" th:href="@{/admin/goods/input}">
+                            <button type="button" class="ui blue basic button"><i class="pencil icon"></i>新增
+                            </button>
+                        </a>
+                    </div>
+                </th>
+
+            </tr>
+            </tfoot>
+
+        </table>
+
+    </div>
+</div>
+
+<br/>
+<br/>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close').on('click',function () {
+        $(this).closest('.message').transition('fade');
+    });
+</script>
+
+</body>
+</html>
